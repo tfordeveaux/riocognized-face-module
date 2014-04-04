@@ -43,7 +43,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fr.olympicinsa.riocognized.FaceDetector</mainClass>
+							<mainClass>fr.olympicinsa.riocognized.Riocognized</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
