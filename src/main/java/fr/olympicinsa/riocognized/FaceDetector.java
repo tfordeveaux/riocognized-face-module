@@ -27,16 +27,17 @@ public class FaceDetector {
             athletePath = FaceDetector.class.getResource("/image.jpg").getPath();
         }
         
+        //Load Haar Cascade Classifier
         CascadeClassifier faceDetector = new CascadeClassifier(FaceDetector.class.getResource("/haarcascade_frontalface_alt.xml").getPath());
-        
-        Mat image = Highgui
-                .imread(athletePath);
+        //Read image
+        Mat image = Highgui.imread(athletePath);
         
         MatOfRect faceDetections = new MatOfRect();
         faceDetector.detectMultiScale(image, faceDetections);
 
         System.out.println(String.format("Detected %s athletes !", faceDetections.toArray().length));
-        //Put rect
+        
+        //Frame recognized athlete faces
         for (Rect rect : faceDetections.toArray()) {
             Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
                     new Scalar(0, 255, 0));
