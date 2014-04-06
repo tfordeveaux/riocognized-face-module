@@ -1,5 +1,6 @@
 package fr.olympicinsa.riocognized;
 
+import static java.lang.System.exit;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -15,7 +16,12 @@ public class FaceDetector {
     
     public FaceDetector(String haarURL){
         //Load Haar Cascade Classifier
-        haarFilter = new CascadeClassifier(haarURL);
+        try {
+            haarFilter = new CascadeClassifier(haarURL);
+        } catch (Exception e) {
+            System.err.println("Can't create FaceDetector");
+            exit(0);
+        }
     }
 
     public int detectFaces(String imageURL, String output) {
