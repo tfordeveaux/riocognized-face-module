@@ -1,4 +1,4 @@
-package fr.olympicinsa.riocognized;
+package fr.olympicinsa.riocognized.facedetector;
 
 import static java.lang.System.exit;
 import org.opencv.core.Core;

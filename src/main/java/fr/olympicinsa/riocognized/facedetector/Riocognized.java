@@ -1,8 +1,9 @@
-package fr.olympicinsa.riocognized;
+package fr.olympicinsa.riocognized.facedetector;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.opencv.core.Core;
 
 public class Riocognized {
 
@@ -14,8 +15,8 @@ public class Riocognized {
         String haarCascade;
         String athletePath;
 
-        System.load("/opt/openCV/libopencv_java248.so");
-        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        //System.load("/opt/openCV/libopencv_java248.so");
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         System.out.println("\nRunning Riocognized FaceDetector");
         String imageParam = (args.length > 0) ? args[0] : "/opt/openCV/image.jpg";
 
