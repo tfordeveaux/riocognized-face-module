@@ -14,7 +14,10 @@ import org.opencv.objdetect.CascadeClassifier;
 public class FaceDetector {
 
     CascadeClassifier haarFilter;
-
+    
+   /**
+     * Load OpenCV JNI Native Library
+     */
     public static void loadLibrary() {
         try {
             System.load("/opt/openCV/libopencv_java248.so");
@@ -22,7 +25,12 @@ public class FaceDetector {
             System.out.println("classPath=" + System.getProperty("java.library.path"));
         }
     }
-
+    /**
+     * Face Detector constructor
+     *
+     * @param haarURL String url path to Haar Classifier xml
+     *
+     */
     public FaceDetector(String haarURL) {
         loadLibrary();
         //Load Haar Cascade Classifier
@@ -33,7 +41,14 @@ public class FaceDetector {
             exit(0);
         }
     }
-
+    
+    /**
+     * Detected faces present in path URL image, and return number of deteced faces.
+     *
+     * @param imageURL path to image
+     * @param output String url to save image result
+     * @return int of detected faces
+     */
     public int detectFaces(String imageURL, String output) {
 
         //Read image
@@ -55,7 +70,14 @@ public class FaceDetector {
 
         return detected;
     }
-
+    
+    /**
+     * Detected faces present in Mat image, and return number of deteced faces.
+     *
+     * @param image Mat of type CV_8UC3 or CV_8UC1
+     * @param output String url to save image result
+     * @return int of detected faces
+     */
     public int detectFaces(Mat image, String output) {
 
         MatOfRect faceDetections = new MatOfRect();
