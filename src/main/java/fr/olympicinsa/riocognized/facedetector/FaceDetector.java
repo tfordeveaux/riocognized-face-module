@@ -53,4 +53,24 @@ public class FaceDetector {
         
         return detected;
     }
+    
+    public int detectFaces(Mat image, String output) {
+        
+        
+        MatOfRect faceDetections = new MatOfRect();
+        haarFilter.detectMultiScale(image, faceDetections);
+
+        int detected = faceDetections.toArray().length;
+        
+        //Frame recognized athlete faces
+        for (Rect rect : faceDetections.toArray()) {
+            Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+                    new Scalar(0, 255, 0));
+        }
+        
+        //Write new file
+        Highgui.imwrite(output, image);
+        
+        return detected;
+    }
 }
