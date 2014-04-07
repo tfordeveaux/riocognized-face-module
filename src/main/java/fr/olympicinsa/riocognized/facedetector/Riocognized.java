@@ -16,7 +16,7 @@ public class Riocognized {
         String athletePath;
 
         //System.load("/opt/openCV/libopencv_java248.so");
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         System.out.println("\nRunning Riocognized FaceDetector");
         String imageParam = (args.length > 0) ? args[0] : "/opt/openCV/image.jpg";
 

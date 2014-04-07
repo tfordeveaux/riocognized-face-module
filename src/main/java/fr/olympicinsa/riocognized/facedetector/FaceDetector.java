@@ -13,8 +13,16 @@ import org.opencv.objdetect.CascadeClassifier;
 public class FaceDetector {
     
     CascadeClassifier haarFilter;
+    public static void loadLibrary(){
+        try {
+            System.load("/opt/openCV/libopencv_java248.so");
+        } catch (Exception e) {
+            System.out.println("classPath=" + System.getProperty("java.library.path"));
+        }
+    }
     
     public FaceDetector(String haarURL){
+        loadLibrary();
         //Load Haar Cascade Classifier
         try {
             haarFilter = new CascadeClassifier(haarURL);
