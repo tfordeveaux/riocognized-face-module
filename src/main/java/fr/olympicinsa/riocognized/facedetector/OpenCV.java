@@ -23,7 +23,8 @@ public class OpenCV {
      */
     public static void loadLibrary() {
         try {
-            System.load(libraryPath + "libopencv_java248.so");
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            //System.load(libraryPath + "libopencv_java248.so");
         } catch (Exception e) {
             System.out.println("classPath=" + System.getProperty("java.library.path"));
         }
