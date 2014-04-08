@@ -3,7 +3,6 @@ package fr.olympicinsa.riocognized.facedetector;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.opencv.core.Core;
 
 public class Riocognized {
 
@@ -27,14 +26,11 @@ public class Riocognized {
             athletePath = "/opt/openCV/image.jpg";
         }
         
-        //Load Haar Cascade Classifier
-        haarCascade = "/opt/openCV/haarcascade_frontalface_alt.xml";
-
         String output = "/opt/openCV/athletes_detected_" + dateString + ".png";
         System.out.println("Result will be written in : " + output + " ....");
 
         try {
-            FaceDetector faceDetector = new FaceDetector(haarCascade);
+            FaceDetector faceDetector = new FaceDetector();
             int detected = faceDetector.detectFaces(athletePath, output);
             System.out.println("Detected " + detected + " athletes !");
         } catch (Exception e) {

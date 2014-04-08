@@ -13,37 +13,32 @@ import org.opencv.objdetect.CascadeClassifier;
 
 public class FaceDetector {
 
-    CascadeClassifier haarFilter;
-    
-   /**
-     * Load OpenCV JNI Native Library
-     */
-    public static void loadLibrary() {
-        try {
-            System.load("/opt/openCV/libopencv_java248.so");
-        } catch (Exception e) {
-            System.out.println("classPath=" + System.getProperty("java.library.path"));
-        }
-    }
+    public final static String CASCADE_RIGHT_EAR = "haarcascade_mcs_rightear.xml";
+    public final static String CASCADE_PROFILEFACE = "haarcascade_profileface.xml";
+    public final static String CASCADE_FRONTALEFACE = "haarcascade_frontalface_alt.xml";
+
+    private int facesDetected;
+    private CascadeClassifier haarFilter;
+    private static OpenCV openCV;
+
     /**
      * Face Detector constructor
      *
-     * @param haarURL String url path to Haar Classifier xml
-     *
      */
-    public FaceDetector(String haarURL) {
-        loadLibrary();
+    public FaceDetector() {
+        openCV = OpenCV.getInstance();
         //Load Haar Cascade Classifier
         try {
-            haarFilter = new CascadeClassifier(haarURL);
+            haarFilter = new CascadeClassifier(openCV.getLibraryPath() + CASCADE_FRONTALEFACE);
         } catch (Exception e) {
             System.err.println("Can't create FaceDetector");
             exit(0);
         }
     }
-    
+
     /**
-     * Detected faces present in path URL image, and return number of deteced faces.
+     * Detected faces present in path URL image, and return number of deteced
+     * faces.
      *
      * @param imageURL path to image
      * @param output String url to save image result
@@ -70,7 +65,7 @@ public class FaceDetector {
 
         return detected;
     }
-    
+
     /**
      * Detected faces present in Mat image, and return number of deteced faces.
      *
@@ -84,7 +79,8 @@ public class FaceDetector {
         haarFilter.detectMultiScale(image, faceDetections);
 
         int detected = faceDetections.toArray().length;
-
+        this.facesDetected = detected;
+        
         //Frame recognized athlete faces
         for (Rect rect : faceDetections.toArray()) {
             Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
@@ -96,46 +92,38 @@ public class FaceDetector {
 
         return detected;
     }
-
+    
     /**
-     * Converts/writes a Mat into a BufferedImage.
+     * Detected faces present in Mat image, and return bufferedImage.
      *
-     * @param matrix Mat of type CV_8UC3 or CV_8UC1
-     * @return BufferedImage of type TYPE_3BYTE_BGR or TYPE_BYTE_GRAY
+     * @param image Mat of type CV_8UC3 or CV_8UC1
+     * @return int of detected faces
      */
-    public static BufferedImage matToBufferedImage(Mat matrix) {
-        int cols = matrix.cols();
-        int rows = matrix.rows();
-        int elemSize = (int) matrix.elemSize();
-        byte[] data = new byte[cols * rows * elemSize];
-        int type;
+    public BufferedImage detectFacesToBufferedImage(Mat image) {
 
-        matrix.get(0, 0, data);
+        MatOfRect faceDetections = new MatOfRect();
+        haarFilter.detectMultiScale(image, faceDetections);
 
-        switch (matrix.channels()) {
-            case 1:
-                type = BufferedImage.TYPE_BYTE_GRAY;
-                break;
-
-            case 3:
-                type = BufferedImage.TYPE_3BYTE_BGR;
-
-                // bgr to rgb
-                byte b;
-                for (int i = 0; i < data.length; i = i + 3) {
-                    b = data[i];
-                    data[i] = data[i + 2];
-                    data[i + 2] = b;
-                }
-                break;
-
-            default:
-                return null;
+        int detected = faceDetections.toArray().length;
+        this.facesDetected = detected;
+        
+        //Frame recognized athlete faces
+        for (Rect rect : faceDetections.toArray()) {
+            Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+                new Scalar(0, 255, 0));
         }
 
-        BufferedImage image = new BufferedImage(cols, rows, type);
-        image.getRaster().setDataElements(0, 0, cols, rows, data);
-
-        return image;
+        //Write new bufferedImage
+        return openCV.matToBufferedImage(image);
     }
+
+    /**
+     * detectedFaces getter
+     *
+     * @return int of detected faces number.
+     */
+    public int getFacesDetected() {
+        return this.facesDetected;
+    }
+
 }
